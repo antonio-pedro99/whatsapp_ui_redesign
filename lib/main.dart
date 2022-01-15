@@ -1,6 +1,8 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/message.dart';
+import 'package:whatsapp_ui/message_tile.dart';
 
 import 'package:whatsapp_ui/story.dart';
 import 'package:whatsapp_ui/story_tile.dart';
@@ -33,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Message> messages = Message.getMessages();
   Widget _buildStories() {
     return Container(
       padding: const EdgeInsets.all(15),
@@ -116,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     return Expanded(
         child: Container(
-      color: Colors.red,
       padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +158,13 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(
             height: 15,
           ),
-          Expanded(child: ListView())
+          Expanded(
+              child: ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return MessageTile(message: messages[index]);
+            },
+          ))
         ],
       ),
     ));
@@ -193,7 +201,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: Column(
-          children: [_buildStories(), _buildBody()],
+          children: [
+            _buildStories(),
+            const SizedBox(
+              height: 20,
+            ),
+            _buildBody()
+          ],
         ),
         extendBody: true,
         bottomNavigationBar: FloatingNavbar(
