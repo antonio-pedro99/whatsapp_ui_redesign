@@ -1,6 +1,7 @@
 # whatsapp_ui
 
-A new Flutter project.
+A simple Whatsapp redesign dark mode concept based on UI Gradient Post on Instagram.
+
 
 ## Getting Started
 
