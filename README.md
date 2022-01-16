@@ -10,7 +10,8 @@ A simple Whatsapp redesign dark mode concept based on UI Gradient Post on Instag
 
 - Screenshot
 
-![Screenshot_1642290947](https://user-images.githubusercontent.com/42675180/149642019-98229f80-e1a9-4df7-80c4-03d5f642f22a.png)
+![image](https://user-images.githubusercontent.com/42675180/149642037-a02d5d65-649e-4ea2-b532-2b37a0d1006b.png)
+
 
 ## Getting Started
 
