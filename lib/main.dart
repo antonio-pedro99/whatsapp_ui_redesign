@@ -1,6 +1,7 @@
-import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:whatsapp_ui/ThemeSer.dart';
 import 'package:whatsapp_ui/message.dart';
 import 'package:whatsapp_ui/message_tile.dart';
 
@@ -16,11 +17,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Whatsapp UI',
-      theme:
-          ThemeData(primarySwatch: Colors.green, brightness: Brightness.dark),
-      home: const MyHomePage(title: "Whatsapp"),
+    return ChangeNotifierProvider<ThemeSer>(
+      create: (_) => ThemeSer(),
+      child: Builder(builder: (context) {
+        final themeSer = Provider.of<ThemeSer>(context);
+        return MaterialApp(
+          title: 'Whatsapp UI',
+          theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                  seedColor: Colors.teal,
+                  brightness:
+                      themeSer.darkTheme ? Brightness.dark : Brightness.light)),
+          home: const MyHomePage(title: "Whatsapp"),
+        );
+      }),
     );
   }
 }
@@ -36,6 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Message> messages = Message.getMessages();
+
   Widget _buildStories() {
     return Container(
       padding: const EdgeInsets.all(15),
@@ -173,51 +184,67 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     int _currentIndex = 2;
+    var size = MediaQuery.of(context).size;
+    final themeSer = Provider.of<ThemeSer>(context, listen: true);
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 80,
-          backgroundColor: Colors.transparent,
-          title: Text(widget.title),
-          titleTextStyle: const TextStyle(fontSize: 24),
-          centerTitle: true,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.settings,
-              size: 30,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                size: 30,
-                color: Colors.white,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              //backgroundColor: Colors.transparent,
+              title: Text(widget.title),
+              titleTextStyle: const TextStyle(fontSize: 24),
+              centerTitle: true,
+              elevation: 0,
+              leading: IconButton(
+                icon: Icon(
+                  themeSer.darkTheme ? Icons.sunny : Icons.dark_mode,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  themeSer.setDarkTheme = !themeSer.darkTheme;
+                },
               ),
-              onPressed: () {},
+              actions: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
             ),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              SafeArea(
+                  child: Container(
+                      padding: const EdgeInsets.all(15),
+                      height: size.height,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            _buildStories(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            _buildBody()
+                          ])))
+            ]))
           ],
         ),
-        body: Column(
-          children: [
-            _buildStories(),
-            const SizedBox(
-              height: 20,
-            ),
-            _buildBody()
-          ],
-        ),
-        extendBody: true,
         bottomNavigationBar: FloatingNavbar(
-            backgroundColor: Colors.grey.shade800,
+            backgroundColor:
+                themeSer.darkTheme ? Colors.grey.shade800 : Colors.teal,
             items: [
               FloatingNavbarItem(icon: Icons.home, title: 'Home'),
               FloatingNavbarItem(icon: Icons.phone, title: 'Phone'),
               FloatingNavbarItem(icon: Icons.add_rounded, title: 'New'),
               FloatingNavbarItem(icon: Icons.people, title: 'Contacts'),
-              FloatingNavbarItem(icon: Icons.person, title: 'My account'),
+              FloatingNavbarItem(icon: Icons.person, title: 'Me'),
             ],
             currentIndex: _currentIndex,
             onTap: (int index) {

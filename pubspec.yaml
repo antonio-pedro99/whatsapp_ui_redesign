@@ -37,6 +37,7 @@ dependencies:
   flashy_tab_bar2: ^0.0.3
   custom_navigation_bar: ^0.8.2
   floating_bottom_navigation_bar: ^1.5.2
+  provider: any
   bubble_tab_indicator: ^0.1.6
 
 dev_dependencies:
