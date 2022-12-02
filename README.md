@@ -19,3 +19,10 @@ A few resources to get you started if this is your first Flutter project:
 - clone the repo: flutter pub get
 - run the project: flutter run <name>
 
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
